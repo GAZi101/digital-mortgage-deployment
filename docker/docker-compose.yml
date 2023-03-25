@@ -1,0 +1,75 @@
+version: '3'
+services:
+# DB Apps Layer
+  db-digital-mortgage-service:
+    image: postgres:latest
+    hostname: db-digital-mortgage-service
+    container_name: db-digital-mortgage-service
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      PGDATA: /data/postgres
+      POSTGRES_DB: digital_mortgage
+    ports:
+      - 5432:5432
+    volumes:
+       - postgres_digital_mortgage:/data/postgres
+  db-digital-document-upload-service:
+    image: postgres:latest
+    hostname: db-digital-document-upload-service
+    container_name: db-digital-document-upload-service
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      PGDATA: /data/postgres
+      POSTGRES_DB: digital_document
+    ports:
+      - 54321:5432
+    volumes:
+       - postgres_digital_document:/data/postgres
+  digital-mortgage-service:
+    image: gemardyz/digital-mortgage-service:v2-latest
+    hostname: digital-mortgage-service
+    container_name: digital-mortgage-service
+    environment:
+      DB_HOST: db-digital-mortgage-service
+      DB_PORT: 5432
+      DB_ENGINE: postgresql
+      DB_NAME: digital_mortgage
+      DB_USERNAME: postgres
+      DB_PASS: postgres
+      SPRING_PROFILES_ACTIVE: docker
+      PORT: 8181
+      DB_DDL: update
+    ports:
+      - 9201:8181
+    depends_on:
+      - db-digital-mortgage-service
+  digital-document-upload-service:
+    image: gemardyz/upload-document-service:v1-latest
+    hostname: digital-document-upload-service
+    container_name: digital-document-upload-service
+    environment:
+      DB_HOST: db-digital-document-upload-service
+      DB_PORT: 5432
+      DB_ENGINE: postgresql
+      DB_NAME: digital_document
+      DB_USERNAME: postgres
+      DB_PASS: postgres
+      SPRING_PROFILES_ACTIVE: docker
+      PORT: 8181
+      DB_DDL: update
+    ports:
+      - 9202:8181
+    depends_on:
+      - db-digital-document-upload-service
+  dukcapil-validation-service:
+    image: gemardyz/dukcapil-validation-service:v1-latest
+    hostname: dukcapil-validation-service
+    container_name: dukcapil-validation-service
+    ports:
+      - 9203:8183
+
+volumes:
+  postgres_digital_document:
+  postgres_digital_mortgage:
