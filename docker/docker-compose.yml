@@ -28,7 +28,7 @@ services:
     volumes:
        - postgres_digital_document:/data/postgres
   digital-mortgage-service:
-    image: gemardyz/digital-mortgage-service:v2-latest
+    image: gemardyz/digital-mortgage-service:main-latest
     hostname: digital-mortgage-service
     container_name: digital-mortgage-service
     environment:
@@ -46,7 +46,7 @@ services:
     depends_on:
       - db-digital-mortgage-service
   digital-document-upload-service:
-    image: gemardyz/upload-document-service:v1-latest
+    image: gemardyz/upload-document-service:main-latest
     hostname: digital-document-upload-service
     container_name: digital-document-upload-service
     environment:
@@ -64,7 +64,7 @@ services:
     depends_on:
       - db-digital-document-upload-service
   dukcapil-validation-service:
-    image: gemardyz/dukcapil-validation-service:v1-latest
+    image: gemardyz/dukcapil-validation-service:main-latest
     hostname: dukcapil-validation-service
     container_name: dukcapil-validation-service
     ports:
