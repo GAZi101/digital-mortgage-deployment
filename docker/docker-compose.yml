@@ -28,7 +28,7 @@ services:
     volumes:
        - postgres_digital_document:/data/postgres
   digital-mortgage-service:
-    image: gemardyz/digital-mortgage-service:main-latest
+    image: ${IMAGE_DMSVC:-gemardyz/digital-mortgage-service:main-latest}
     hostname: digital-mortgage-service
     container_name: digital-mortgage-service
     environment:
