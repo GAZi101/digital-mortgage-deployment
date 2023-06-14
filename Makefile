@@ -7,5 +7,4 @@ list:
 stop:
 	- docker compose -f ./docker/docker-compose.yml down --remove-orphans
 start-all-services:
-	- export IMAGE_DMSVC=$(IMAGE_DMSVC)
 	- docker compose -f ./docker/docker-compose.yml up -d --force-recreate
